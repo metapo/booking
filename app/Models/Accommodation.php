@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Accommodation extends Model
 {
@@ -11,7 +12,14 @@ class Accommodation extends Model
 
     protected $guarded = ['id'];
 
-    // todo: relation with calendar
+    protected $casts = [
+        //todo
+    ];
 
-    //todo methods: activate and deactiv
+    public function calendars(): HasMany
+    {
+        return $this->hasMany(Calendar::class);
+    }
+
+    //todo methods: activate and deactivate
 }
