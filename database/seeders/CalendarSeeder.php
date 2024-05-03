@@ -20,7 +20,7 @@ class CalendarSeeder extends Seeder
         foreach ($accommodations as $accommodation) {
             Calendar::factory(30)
                 ->sequence(fn ($sequence) => ['date' => now()->addDays($sequence->index)])
-                ->for($accommodation) // ارتباط با اقامتگاه
+                ->for($accommodation)
                 ->create();
         }
     }
