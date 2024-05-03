@@ -24,25 +24,13 @@ class CalendarFactory extends Factory
         $infantPrice = intval($basePrice * 0.1);
 
         return [
-            'date' => Carbon::now()->addDays(fake()->numberBetween(1, 30)),
+            'date' => Carbon::now()->addDay(),
             'base_price' => $basePrice,
             'adult_price' => $adultPrice,
             'child_price' => $childPrice,
             'infant_price' => $infantPrice,
-            'is_reserved' => fake()->randomFloat(2, 0, 1) <= 0.8, // 80 percent true
+            'is_reserved' => fake()->randomFloat(2, 0, 1) <= 0.8, //true for 80 percent of times
         ];
     }
 
-    public function consecutiveDates($count)
-    {
-        $startDate = now();
-
-        return $this->state(new Sequence(
-            function ($sequence) use ($startDate) {
-                return [
-                    'date' => $startDate->copy()->addDays($sequence->index),
-                ];
-            }
-        ));
-    }
 }

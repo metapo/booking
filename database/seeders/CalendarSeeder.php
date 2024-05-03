@@ -15,11 +15,13 @@ class CalendarSeeder extends Seeder
      */
     public function run(): void
     {
-        $accommodation = Accommodation::factory()->create();
+        $accommodations = Accommodation::factory(30)->create();
 
-        Calendar::factory(30)
-            ->consecutiveDates(30)
-            ->for($accommodation)
-            ->create();
+        foreach ($accommodations as $accommodation) {
+            Calendar::factory(30)
+                ->sequence(fn ($sequence) => ['date' => now()->addDays($sequence->index)])
+                ->for($accommodation) // ارتباط با اقامتگاه
+                ->create();
+        }
     }
 }
