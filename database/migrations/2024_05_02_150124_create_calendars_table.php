@@ -23,10 +23,6 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index(['accommodation_id', 'is_reserved', 'date'], 'calendars_acc_rsv_dte_idx');
-            $table->index(
-                ['accommodation_id', 'is_reserved', 'date', 'base_price', 'adult_price', 'child_price', 'infant_price'],
-                'calendars_acc_rsv_dte_bse_adt_cld_inf_idx'
-            );
         });
     }
 
