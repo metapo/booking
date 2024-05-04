@@ -4,7 +4,7 @@ namespace App\Services\PricingServices\PricingStrategies;
 
 use App\Models\Accommodation;
 
-class CustomerFriendlyPricingStrategy implements PricingStrategy
+class CustomerFriendlyPricingStrategyContract extends PricingStrategy
 {
 
     public function calculate(Accommodation $accommodation, array $data): float
