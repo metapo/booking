@@ -2,11 +2,12 @@
 
 namespace App\Services\PricingServices\PricingStrategies;
 
+use App\Models\Accommodation;
+
 class BasePricingStrategy implements PricingStrategy
 {
-
-    public function calculate(): float
+    public function calculate(Accommodation $accommodation, array $data): float
     {
-        // TODO: Implement calculate() method.
+        dd('base');
     }
 }
