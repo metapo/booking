@@ -6,8 +6,14 @@ use App\Models\Accommodation;
 
 class OwnerFriendlyPricingStrategy extends PricingStrategy
 {
+    use SortFriendlyPricingStrategyTrait;
     public function calculate(Accommodation $accommodation, array $data): float
     {
-        dd('owner');
+        return $this->calculateTotalBasePrice($accommodation->calendars) + $this->calculateTotalAdditionalPrice($accommodation, $data);
+    }
+
+    protected function getSortOrder(): string
+    {
+        return 'desc';
     }
 }
