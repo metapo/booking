@@ -2,24 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CalendarRequest;
 use App\Http\Requests\CalendarSearchRequest;
 use App\Services\CalendarService;
 use App\Services\PricingServices\PricingService;
-use Illuminate\Http\Request;
 
 class CalendarController extends Controller
 {
     public function __construct(protected CalendarService $calendarService, protected PricingService $pricingService)
     {
     }
-    public function store()
+    public function store(CalendarRequest $request)
     {
-
-    }
-
-    public function update()
-    {
-
+        $results = $this->calendarService->create($request->validated());
     }
 
     public function search(CalendarSearchRequest $request)

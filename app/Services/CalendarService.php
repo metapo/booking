@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Accommodation;
+use App\Models\Calendar;
 use App\Services\PricingServices\PricingService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -10,6 +11,28 @@ use Illuminate\Support\Facades\DB;
 
 class CalendarService
 {
+    public function create(array $data): bool
+    {
+        $fromDate = Carbon::parse($data['from_date']);
+        $toDate = Carbon::parse($data['to_date']);
+
+        $numberOfDays = $fromDate->diffInDays($toDate) + 1;
+
+        $calendars = [];
+        for ($i = 0; $i < $numberOfDays; $i++) {
+            $currentDate = $fromDate->copy()->addDays($i);
+            $calendars[] = [
+                'accommodation_id' => $data['accommodation_id'],
+                'date' => $currentDate,
+                'base_price' => $data['base_price'],
+                'adult_price' => $data['adult_price'],
+                'child_price' => $data['child_price'],
+                'infant_price' => $data['infant_price'],
+            ];
+        }
+
+        return Calendar::insert($calendars);
+    }
     public function search(array $data, PricingService $pricingService)
     {
         $accommodations = $this->getAccommodationsByDateFilters($data['checkin'], $data['checkout']);

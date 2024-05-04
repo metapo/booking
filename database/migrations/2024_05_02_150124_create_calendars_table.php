@@ -22,6 +22,7 @@ return new class extends Migration
             $table->boolean('is_reserved')->default(false);
             $table->timestamps();
 
+            $table->unique(['accommodation_id', 'date']);
             $table->index(['accommodation_id', 'is_reserved', 'date'], 'calendars_acc_rsv_dte_idx');
         });
     }
