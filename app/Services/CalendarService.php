@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Accommodation;
-use App\Models\Calendar;
 use App\Services\PricingServices\PricingService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -15,9 +14,18 @@ class CalendarService
     {
         $accommodations = $this->getAccommodationsByDateFilters($data['checkin'], $data['checkout']);
 
-        $pricingService->calculate($accommodations, collect($data)
-            ->only('adult_count', 'child_count', 'infant_count')->toArray());
-        dd($accommodations);
+        $accommodations = $pricingService
+            ->calculate($accommodations, collect($data)->only('adult_count', 'child_count', 'infant_count')->toArray())
+            ->map(function ($accommodation) {
+                return $accommodation->only(['id', 'name', 'occupancy', 'total_price', 'requested_nights']);
+            });
+
+        if (isset($data['min_price']) or isset($data['max_price'])) {
+            $accommodations = $this->filterAccommodationsByPrice($accommodations, collect($data)
+                ->only('min_price', 'max_price')->toArray());
+        }
+
+        return $accommodations;
     }
 
     private function getAccommodationsByDateFilters(string $checkin, string $checkout): Collection
@@ -43,5 +51,16 @@ class CalendarService
                     ->whereBetween('date', [$checkin, $checkout]);
             }])
             ->get();
+    }
+
+    private function filterAccommodationsByPrice(Collection $accommodations, array $data)
+    {
+        return $accommodations
+            ->when(isset($data['min_price']), function ($query) use ($data) {
+                return $query->where('total_price', '>=', $data['min_price']);
+            })
+            ->when(isset($data['max_price']), function ($query) use ($data) {
+                return $query->where('total_price', '<=', $data['max_price']);
+            });
     }
 }

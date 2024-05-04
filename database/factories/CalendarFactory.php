@@ -29,7 +29,7 @@ class CalendarFactory extends Factory
             'adult_price' => $adultPrice,
             'child_price' => $childPrice,
             'infant_price' => $infantPrice,
-            'is_reserved' => fake()->randomFloat(2, 0, 1) <= 0.8, //true for 80 percent of times
+            'is_reserved' => fake()->randomFloat(2, 0, 1) <= 0.2, //true for 20 percent of times
         ];
     }
 

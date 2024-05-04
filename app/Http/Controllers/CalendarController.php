@@ -24,8 +24,8 @@ class CalendarController extends Controller
 
     public function search(CalendarSearchRequest $request)
     {
-       /* $results =*/ $this->calendarService->search($request->validated(), $this->pricingService);
+        $results = $this->calendarService->search($request->validated(), $this->pricingService);
 
-//        return response()->json($results, 200);
+        return response()->json($results, 200);
     }
 }
