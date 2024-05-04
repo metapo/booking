@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Calendar;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -34,5 +36,19 @@ class CalendarSearchRequest extends FormRequest
             'child_count' => ['required', 'integer', 'min:0', 'max:20'],
             'infant_count' => ['required', 'integer', 'min:0', 'max:10'],
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+
+            $checkin = Carbon::parse($this->input('checkin'));
+            $checkout = Carbon::parse($this->input('checkout'));
+
+            $numberOfDays = $checkin->diffInDays($checkout) + 1;
+            if ($numberOfDays > 30) {
+                $validator->errors()->add('to_date', 'Date range exceeds the 30-day limit.');
+            }
+        });
     }
 }
