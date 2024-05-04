@@ -11,8 +11,8 @@ class PricingService
     {
         return $accommodations->transform(function ($accommodation) use ($data) {
             $pricingStrategy = PricingStrategyFactory::make($data, $accommodation->occupancy);
-            return $pricingStrategy->calculate($accommodation, $data);
-            $accommodation->total_price = 1000;
+            $accommodation->total_price = $pricingStrategy->calculate($accommodation, $data);
+            $accommodation->requested_nights = $accommodation->calendars->count();
             return $accommodation;
         });
     }

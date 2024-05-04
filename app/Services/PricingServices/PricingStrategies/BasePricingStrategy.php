@@ -8,7 +8,6 @@ class BasePricingStrategy extends PricingStrategy
 {
     public function calculate(Accommodation $accommodation, array $data): float
     {
-        return 1000;
-        dd($accommodation->calendars, $data);
+        return $this->calculateTotalBasePrice($accommodation->calendars);
     }
 }

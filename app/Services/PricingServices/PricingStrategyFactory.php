@@ -12,7 +12,6 @@ class PricingStrategyFactory
 {
     public static function make(array $requestedCount, int $occupancy): PricingStrategyContract
     {
-        return new BasePricingStrategy();
         if (array_sum($requestedCount) <= $occupancy) {
             return new BasePricingStrategy();
         }
